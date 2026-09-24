@@ -1,0 +1,25 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {section}{\numberline {0.1}Introduccion}{1}{section.0.1}%
+\contentsline {section}{\numberline {0.2}Objetivos}{1}{section.0.2}%
+\contentsline {subsection}{\numberline {0.2.1}Objetivo general}{1}{subsection.0.2.1}%
+\contentsline {subsection}{\numberline {0.2.2}Objetivos específicos}{1}{subsection.0.2.2}%
+\contentsline {chapter}{\numberline {1}Marco Teórico}{3}{chapter.1}%
+\contentsline {subsection}{\numberline {1.0.1}Compuertas lógicas}{3}{subsection.1.0.1}%
+\contentsline {subsubsection}{Compuerta NOT}{3}{section*.5}%
+\contentsline {subsubsection}{Compuerta AND}{4}{section*.6}%
+\contentsline {subsubsection}{Compuerta OR}{4}{section*.7}%
+\contentsline {subsubsection}{Compuerta NAND}{4}{section*.8}%
+\contentsline {section}{\numberline {1.1}Tabla de verdad}{4}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Algebra booleana}{5}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}Simplificación de funciones booleanas}{6}{subsection.1.1.2}%
+\contentsline {subsection}{\numberline {1.1.3}Mapas de Karnaugh}{7}{subsection.1.1.3}%
+\contentsline {chapter}{\numberline {2}Procedimiento}{8}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Análisis del circuito combinacional}{8}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Construcción de la tabla de verdad}{9}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Obtención de las funciones booleanas y simplificación mediante álgebra booleana}{10}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Simplificación mediante mapas de Karnaugh}{11}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Verificación mediante simulación}{11}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Montaje físico del circuito}{11}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Análisis lógico del circuito original}{11}{section.2.7}%
+\contentsline {section}{\numberline {2.8}Tabla de verdad}{11}{section.2.8}%
+\contentsline {chapter}{\numberline {3}Conclusiones}{12}{chapter.3}%
