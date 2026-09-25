@@ -336,185 +336,584 @@ Al obtener el término correspondiente a cada agrupación, las variables que cam
 
 De esta manera, los mapas de Karnaugh permiten obtener una expresión booleana equivalente a la función original mediante la identificación visual de variables que pueden eliminarse.
 
+% 4. PROCEDIMIENTO
 
-\chapter{Procedimiento}
+\section{Procedimiento}
 
-\section{Análisis del circuito combinacional}
-Primero se debe realizar un reconocimiento del circuito entregado
-\begin{figure}[htbp]
+\subsection{Análisis del circuito combinacional}
+
+Como primera etapa se realizó un reconocimiento del circuito entregado.
+
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{images/Cap_Circuito.png}
-    \caption{Circuito original}
-    \label{fig:mi-etiqueta}
+    \caption{Circuito combinacional original.}
+    \label{fig:circuito-original}
 \end{figure}
 
-En la imagen podemos apreciar el el circuito cuenta con:
-\begin{enumerate}
-\item Tres interruptores
-\item Un set de resistencias pull-down
-\item Dos inversores (NOT)
-\item Siete puertas logicas distintas
-\item Dos resistencias comunes
-\item Dos luces led
-\end{enumerate}
-Notar que las siete puertas logicas, solo hay seis enumeradas, por lo tanto, desde ahora en mas, por motivos practicos decidimos llamar a dicha puerta logica como `Pureta x`.
+En el circuito se identificaron tres entradas, correspondientes a $A$, $B$ y $C$,
+y dos salidas asociadas a los LED $D1$ y $D2$. Además, se reconocieron las
+compuertas lógicas y las conexiones existentes entre ellas.
 
-La puertas logicas del circuito corresponden a:
+Como una de las compuertas no se encuentra numerada en el esquema original, para
+facilitar su identificación durante el desarrollo se la denominó \textit{Puerta X}.
 
-\begin{table}[htbp]
+Las compuertas identificadas en el circuito se resumen en la
+Tabla~\ref{tab:compuertas-circuito}.
+
+\begin{table}[H]
     \centering
-    \caption{Relación de puertas lógicas.}
-    \label{tab:puertas_logicas}
-    \begin{tabular}{c|l}
-        \hline
-        \textbf{Puerta} & \textbf{Lógica} \\ \hline
+    \caption{Compuertas identificadas en el circuito original.}
+    \label{tab:compuertas-circuito}
+    \begin{tabular}{c|c}
+        \toprule
+        \textbf{Puerta} & \textbf{Tipo} \\
+        \midrule
         1 & AND \\
         2 & NOR \\
         3 & NAND \\
         4 & NAND \\
+        X & NAND \\
         5 & OR \\
         6 & OR \\
-        x & NAND \\
-        \hline
-    \end{tabular}
-\end{table}
-
-
-\section{Construcción de la tabla de verdad}
-
-Podemos reconocer que la tabla de verdad posee 3 entradas y 2 salidas, siendo las entradas $\{A, B, C\}$, mientras que las salidas son $\{D1, D2\}$. Con la información anterior podemos deducir que nuestra tabla poseerá ocho hileras, gracias a la relación nombrada en el marco teórico. Asimismo, para detallar el comportamiento completo del circuito y de cada una de sus partes, se han incorporado las funciones intermedias correspondientes a todas las compuertas del diseño original ($F_1$ hasta $F_6$ ademas de $F_X$), quedando estructurada de la siguiente manera:
-
-\begin{table}[H]
-    \centering
-    \caption{Tabla de verdad extendida con todas las salidas intermedias y principales.}
-    \label{tab:tabla-verdad-extendida}
-    \begin{tabular}{ccc|ccccccc|cc}
-        \toprule
-        $A$ & $B$ & $C$ & $F_1$ & $F_2$ & $F_3$ & $F_4$ & $F_5$ & $F_6$ & $F_X$ & $D1$ & $D2$ \\
-        \midrule
-        0 & 0 & 0 & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
-        0 & 0 & 1 & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
-        0 & 1 & 0 & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
-        0 & 1 & 1 & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
-        1 & 0 & 0 & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
-        1 & 0 & 1 & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
-        1 & 1 & 0 & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
-        1 & 1 & 1 & -- & -- & -- & -- & -- & -- & -- & -- & -- \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-Por temas de simplicidad, se evito mencionar las puertas logicas (NOT) en la tabla, seran tomadas en cuenta mediante algebra booleana.
-
-\section{Obtención de las funciones booleanas y simplificación mediante álgebra booleana}
-
-A partir del análisis del circuito original, se determinan las funciones lógicas intermedias para cada compuerta y nodo del sistema:
-
-\begin{align*}
-    F_1 &= A \overline{B} \\
-    F_2 &= \overline{C + \overline{C}} \\
-    F_3 &= \overline{A \overline{C}} \\
-    F_4 &= \overline{\overline{B} \overline{C}} \\
-    F_5 &= F_1 + F_x = A \overline{B} + \left[ (\overline{A \overline{C}}) (\overline{\overline{B} \overline{C}}) \right] \\
-    F_6 &= A \overline{B} \ \overline{C + \overline{C}}
-\end{align*}
-
-Las simplificaciones con sus respectivas reglas son tal que:
-
-\begin{align*}
-    F_2 &= \overline{C + \overline{C}}= \overline{1} = 0 && \text{--- Regla del complemento} \\
-    F_3 &= \overline{A \overline{C}}= \overline{A} + \overline{\overline{C}} && \text{--- Ley de Morgan y Doble Negación} \\
-    F_4 &= \overline{\overline{B} \overline{C}} = \overline{\overline{B}}+ \overline{\overline{C}} = B + C && \text{--- Ley de Morgan y Doble Negación} \\
-    F_5 &= A \overline{B} + \left( \overline{A \overline{C}} \right) \left( \overline{\overline{B} \overline{C}} \right) = A \overline{B} + ( A + C )( B + C ) && \text{--- Ley de Morgan y Doble Negación} \\
-    F_6 &= A\overline{B} + 0 = A \overline{B} && \text{--- Identidad}
-\end{align*}
-\section{Simplificación mediante mapas de Karnaugh}
+A partir de este reconocimiento se siguió el recorrido de las señales desde las
+entradas hasta las salidas, asignando una función intermedia a cada una de las
+compuertas del circuito. Estas funciones fueron utilizadas posteriormente para
+construir la tabla de verdad y determinar las funciones de salida.
 
 
-% ---------------------------------------------------------
-% 4.6 Simulación
-% ---------------------------------------------------------
+\subsection{Construcción de la tabla de verdad}
 
-\section{Verificación mediante simulación}
+El circuito posee tres entradas, $A$, $B$ y $C$, por lo que existen ocho
+combinaciones posibles de entrada, desde $000$ hasta $111$.
+
+Para cada combinación se evaluaron las distintas etapas del circuito y se registró
+el valor obtenido en las salidas $D1$ y $D2$. También se consideraron las funciones
+intermedias de las compuertas, ya que estas permiten observar de manera más clara
+cómo se obtiene cada salida a partir de las entradas.
+
+La tabla de verdad completa obtenida mediante este procedimiento se presenta en la
+sección de resultados.
 
 
-% ---------------------------------------------------------
-% 4.7 Montaje físico
-% ---------------------------------------------------------
+\subsection{Obtención de las funciones booleanas}
 
-\section{Montaje físico del circuito}
+Luego de identificar las compuertas y sus conexiones, se escribió una expresión
+booleana para cada una de las funciones intermedias del circuito.
+
+El procedimiento consistió en comenzar desde las entradas $A$, $B$ y $C$ y avanzar
+siguiendo las conexiones del circuito. Cuando una función intermedia era utilizada
+como entrada de otra compuerta, su expresión se incorporaba a la siguiente función.
+
+De esta forma se obtuvieron finalmente las expresiones correspondientes a las
+salidas $D1$ y $D2$. Las funciones y su desarrollo completo se presentan en la
+sección de resultados.
 
 
-% =========================================================
+\subsection{Simplificación mediante álgebra booleana}
+
+Una vez obtenidas las funciones booleanas del circuito, se procedió a simplificarlas
+mediante las leyes y reglas del álgebra de Boole estudiadas en clases.
+
+Durante este proceso se aplicaron, según correspondiera, propiedades como el
+complemento, la doble negación, las leyes de De Morgan, la factorización y otras
+identidades de simplificación.
+
+La reducción se realizó paso a paso hasta obtener expresiones equivalentes de menor
+complejidad. El desarrollo algebraico completo de cada función se presenta en la
+sección de resultados.
+
+
+\subsection{Simplificación mediante mapas de Karnaugh}
+
+Como segundo método de reducción se utilizaron mapas de Karnaugh a partir de los
+valores obtenidos en la tabla de verdad.
+
+Para cada salida se identificaron las combinaciones en las cuales su valor era $1$
+y se ubicaron en el mapa correspondiente. Se utilizó la distribución trabajada en
+clases, con $C$ en las filas y $AB$ en las columnas, siguiendo el orden Gray
+
+\[
+00,\ 01,\ 11,\ 10.
+\]
+
+Luego se formaron las agrupaciones posibles y se determinaron las variables que
+permanecían constantes dentro de cada grupo. A partir de ellas se obtuvo la función
+reducida correspondiente a cada salida.
+
+Los mapas, las agrupaciones realizadas y las funciones obtenidas se presentan en la
+sección de resultados.
+
+
+\subsection{Verificación mediante simulación}
+
+% Completar con el procedimiento real utilizado por el compañero.
+% Indicar el software utilizado, cómo se ingresaron las ocho
+% combinaciones y cómo se verificó el circuito original y reducido.
+
+
+\subsection{Montaje físico del circuito}
+
+% Completar con el procedimiento real utilizado durante el montaje.
+% Indicar componentes, conexiones, alimentación y forma de
+% comprobación de las entradas y salidas.
+
+% 5. RESULTADOS
+
+\section{Resultados}
+
 % 5.1 ANÁLISIS DEL CIRCUITO ORIGINAL
-% =========================================================
 
-\section{Análisis lógico del circuito original}
+\subsection{Análisis lógico del circuito original}
 
-% Presentar las expresiones correspondientes
-% a cada compuerta o nodo numerado del circuito.
-%
-% Por ejemplo:
-%
-% F1 = ...
-% F2 = ...
-% F3 = ...
-% F4 = ...
-%
-% Utilizar únicamente las expresiones previamente
-% revisadas.
+A partir del circuito original se identificaron las funciones correspondientes a
+cada una de sus compuertas. Antes de ingresar a las primeras compuertas, las
+entradas $B$ y $C$ pasan por inversores, obteniéndose $\overline{B}$ y
+$\overline{C}$.
 
+La Puerta 1 corresponde a una AND cuyas entradas son $A$ y $\overline{B}$, por lo
+que su función es:
 
-% Ejemplo de formato:
-%
-% \begin{equation}
-%     F_1 = ...
-% \end{equation}
+\begin{equation}
+    F_1 = A\overline{B}
+\end{equation}
 
+La Puerta 2 corresponde a una NOR que recibe $C$ y $\overline{C}$:
 
-% =========================================================
+\begin{equation}
+    F_2 = \overline{C+\overline{C}}
+\end{equation}
+
+Las Puertas 3 y 4 corresponden a compuertas NAND. Sus funciones son:
+
+\begin{align}
+    F_3 &= \overline{A\overline{C}} \\
+    F_4 &= \overline{\overline{B}\,\overline{C}}
+\end{align}
+
+Las salidas de $F_3$ y $F_4$ ingresan a la compuerta NAND que no se encuentra
+numerada en el esquema, identificada durante el desarrollo como Puerta X. Su función
+queda definida como:
+
+\begin{equation}
+    F_X = \overline{F_3F_4}
+\end{equation}
+
+Finalmente, la Puerta 5 corresponde a una OR que combina $F_1$ y $F_X$:
+
+\begin{equation}
+    F_5 = F_1 + F_X
+\end{equation}
+
+Esta función corresponde a la salida $D1$:
+
+\begin{equation}
+    D1 = F_5
+\end{equation}
+
+Por otra parte, la Puerta 6 combina mediante una OR las funciones $F_1$ y $F_2$:
+
+\begin{equation}
+    F_6 = F_1 + F_2
+\end{equation}
+
+La salida de esta compuerta corresponde a $D2$:
+
+\begin{equation}
+    D2 = F_6
+\end{equation}
+
 % 5.2 TABLA DE VERDAD
-% =========================================================
 
-\section{Tabla de verdad}
+\subsection{Tabla de verdad}
+
+A partir de las funciones obtenidas en el análisis del circuito, se evaluaron las
+ocho combinaciones posibles de las entradas $A$, $B$ y $C$.
+
+Además de las salidas finales, se incluyeron las funciones intermedias del circuito
+para observar cómo se obtiene cada resultado. En este caso, $F_5$ corresponde a
+$D1$ y $F_6$ corresponde a $D2$.
 
 \begin{table}[H]
-
     \centering
-
-    \caption{Tabla de verdad del circuito combinacional.}
-
-    \label{tab:tabla-verdad}
-
-    \begin{tabular}{ccc|cc}
-
+    \caption{Tabla de verdad extendida del circuito original.}
+    \label{tab:tabla-verdad-extendida}
+    \begin{tabular}{ccc|ccccccc}
         \toprule
-
-        $A$ & $B$ & $C$ & $D1$ & $D2$ \\
-
+        $A$ & $B$ & $C$ &
+        $F_1$ & $F_2$ & $F_3$ & $F_4$ & $F_X$ & $F_5$ & $F_6$ \\
         \midrule
-
-        0 & 0 & 0 & -- & -- \\
-
-        0 & 0 & 1 & -- & -- \\
-
-        0 & 1 & 0 & -- & -- \\
-
-        0 & 1 & 1 & -- & -- \\
-
-        1 & 0 & 0 & -- & -- \\
-
-        1 & 0 & 1 & -- & -- \\
-
-        1 & 1 & 0 & -- & -- \\
-
-        1 & 1 & 1 & -- & -- \\
-
+        0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 0 \\
+        0 & 0 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 \\
+        0 & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 0 \\
+        1 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 1 & 1 \\
+        1 & 0 & 1 & 1 & 0 & 1 & 1 & 0 & 1 & 1 \\
+        1 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 0 \\
+        1 & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 0 \\
         \bottomrule
-
     \end{tabular}
-
 \end{table}
+
+Leyendo las combinaciones en orden desde $000$ hasta $111$, las salidas obtenidas son:
+
+\begin{align}
+    D1 &= [1,0,0,0,1,1,1,0] \\
+    D2 &= [0,0,0,0,1,1,0,0]
+\end{align}
+
+% 5.3 FUNCIONES BOOLEANAS
+
+\subsection{Funciones booleanas de las salidas}
+
+A partir de las funciones intermedias obtenidas en el circuito se pueden expresar
+directamente las dos salidas finales.
+
+\subsubsection{Salida D1}
+
+La salida $D1$ corresponde a la salida de la Puerta 5, por lo que:
+
+\begin{equation}
+    D1 = F_5
+\end{equation}
+
+Como la Puerta 5 recibe las señales $F_1$ y $F_X$, se tiene:
+
+\begin{equation}
+    D1 = F_1 + F_X
+\end{equation}
+
+Reemplazando las funciones correspondientes:
+
+\begin{equation}
+    D1 =
+    A\overline{B}
+    +
+    \overline{
+        \left(\overline{A\overline{C}}\right)
+        \left(\overline{\overline{B}\,\overline{C}}\right)
+    }
+\end{equation}
+
+Esta corresponde a la función booleana obtenida directamente desde el circuito
+original para la salida $D1$.
+
+
+\subsubsection{Salida D2}
+
+La salida $D2$ corresponde a la salida de la Puerta 6:
+
+\begin{equation}
+    D2 = F_6
+\end{equation}
+
+Esta compuerta recibe las señales $F_1$ y $F_2$, por lo que:
+
+\begin{equation}
+    D2 = F_1 + F_2
+\end{equation}
+
+Reemplazando ambas funciones:
+
+\begin{equation}
+    D2 =
+    A\overline{B}
+    +
+    \overline{C+\overline{C}}
+\end{equation}
+
+Estas dos expresiones serán simplificadas mediante álgebra booleana en el
+siguiente apartado.
+
+% 5.4 REDUCCIÓN ALGEBRAICA
+
+\subsection{Reducción mediante álgebra booleana}
+
+A partir de las funciones obtenidas para el circuito original, se aplicaron las
+reglas del álgebra de Boole para obtener expresiones equivalentes más simples.
+
+\subsubsection{Salida D1}
+
+Para simplificar $D1$ primero se reducen las funciones intermedias que participan
+en su expresión.
+
+La función $F_3$ es:
+
+\begin{equation}
+    F_3 = \overline{A\overline{C}}
+\end{equation}
+
+Aplicando el teorema de De Morgan y doble negación:
+
+\begin{align}
+    F_3
+    &= \overline{A} + \overline{\overline{C}} \\
+    &= \overline{A} + C
+\end{align}
+
+Para $F_4$:
+
+\begin{equation}
+    F_4 = \overline{\overline{B}\,\overline{C}}
+\end{equation}
+
+Aplicando nuevamente De Morgan:
+
+\begin{align}
+    F_4
+    &= \overline{\overline{B}}
+       + \overline{\overline{C}} \\
+    &= B + C
+\end{align}
+
+La Puerta X corresponde a una NAND entre $F_3$ y $F_4$:
+
+\begin{equation}
+    F_X = \overline{F_3F_4}
+\end{equation}
+
+Reemplazando las funciones anteriores:
+
+\begin{equation}
+    F_X =
+    \overline{
+        (\overline{A}+C)(B+C)
+    }
+\end{equation}
+
+Aplicando el teorema de De Morgan:
+
+\begin{align}
+    F_X
+    &=
+    \overline{\overline{A}+C}
+    +
+    \overline{B+C} \\
+    &=
+    A\overline{C}
+    +
+    \overline{B}\,\overline{C}
+\end{align}
+
+También puede factorizarse $\overline{C}$:
+
+\begin{equation}
+    F_X =
+    \overline{C}(A+\overline{B})
+\end{equation}
+
+La salida $D1$ está dada por:
+
+\begin{equation}
+    D1 = F_1 + F_X
+\end{equation}
+
+Como:
+
+\begin{equation}
+    F_1 = A\overline{B}
+\end{equation}
+
+se obtiene:
+
+\begin{align}
+    D1
+    &= A\overline{B}
+    + A\overline{C}
+    + \overline{B}\,\overline{C}
+\end{align}
+
+Por lo tanto, la expresión reducida para la primera salida es:
+
+\begin{equation}
+    \boxed{
+    D1 =
+    A\overline{B}
+    + A\overline{C}
+    + \overline{B}\,\overline{C}
+    }
+\end{equation}
+
+
+\subsubsection{Salida D2}
+
+La salida $D2$ corresponde a:
+
+\begin{equation}
+    D2 = F_1 + F_2
+\end{equation}
+
+La función $F_2$ es:
+
+\begin{equation}
+    F_2 = \overline{C+\overline{C}}
+\end{equation}
+
+Aplicando la regla del complemento:
+
+\begin{align}
+    F_2
+    &= \overline{1} \\
+    &= 0
+\end{align}
+
+Por lo tanto:
+
+\begin{align}
+    D2
+    &= A\overline{B} + 0 \\
+    &= A\overline{B}
+\end{align}
+
+La expresión reducida para la segunda salida es:
+
+\begin{equation}
+    \boxed{
+    D2 = A\overline{B}
+    }
+\end{equation}
+
+% 5.5 MAPAS DE KARNAUGH
+
+\subsection{Reducción mediante mapas de Karnaugh}
+
+A partir de la tabla de verdad se identificaron los mintérminos en los cuales cada
+salida toma el valor lógico $1$. Estos valores se ubicaron en los mapas de Karnaugh
+utilizando la distribución $C\backslash AB$ y el orden Gray $00$, $01$, $11$, $10$.
+
+\subsubsection{Salida D1}
+
+Para la salida $D1$ se obtiene un valor $1$ en las combinaciones $0$, $4$, $5$ y $6$.
+Por lo tanto:
+
+\begin{equation}
+    D1 = \Sigma m(0,4,5,6)
+\end{equation}
+
+El mapa de Karnaugh correspondiente es:
+
+\begin{center}
+\begin{tabular}{c|cccc}
+    $C\backslash AB$ & 00 & 01 & 11 & 10 \\
+    \hline
+    0 & 1 & 0 & 1 & 1 \\
+    1 & 0 & 0 & 0 & 1
+\end{tabular}
+\end{center}
+
+En este mapa se pueden realizar tres agrupaciones de dos elementos.
+
+La primera agrupación corresponde a los mintérminos $m_0$ y $m_4$. En ambos casos
+se mantienen:
+
+\begin{equation}
+    B=0,
+    \qquad
+    C=0
+\end{equation}
+
+mientras que $A$ cambia. Por lo tanto, este grupo entrega:
+
+\begin{equation}
+    \overline{B}\,\overline{C}
+\end{equation}
+
+La segunda agrupación corresponde a $m_4$ y $m_5$. En este caso se mantienen:
+
+\begin{equation}
+    A=1,
+    \qquad
+    B=0
+\end{equation}
+
+mientras que $C$ cambia, obteniéndose:
+
+\begin{equation}
+    A\overline{B}
+\end{equation}
+
+Finalmente, se agrupan $m_4$ y $m_6$. Las variables que permanecen constantes son:
+
+\begin{equation}
+    A=1,
+    \qquad
+    C=0
+\end{equation}
+
+por lo que este grupo corresponde a:
+
+\begin{equation}
+    A\overline{C}
+\end{equation}
+
+Sumando los términos obtenidos de las tres agrupaciones:
+
+\begin{equation}
+    \boxed{
+    D1 =
+    A\overline{B}
+    + A\overline{C}
+    + \overline{B}\,\overline{C}
+    }
+\end{equation}
+
+
+\subsubsection{Salida D2}
+
+Para la salida $D2$, los valores $1$ se encuentran únicamente en las combinaciones
+$4$ y $5$:
+
+\begin{equation}
+    D2 = \Sigma m(4,5)
+\end{equation}
+
+El mapa correspondiente es:
+
+\begin{center}
+\begin{tabular}{c|cccc}
+    $C\backslash AB$ & 00 & 01 & 11 & 10 \\
+    \hline
+    0 & 0 & 0 & 0 & 1 \\
+    1 & 0 & 0 & 0 & 1
+\end{tabular}
+\end{center}
+
+Los mintérminos $m_4$ y $m_5$ forman una sola agrupación. En ambos casos se mantienen:
+
+\begin{equation}
+    A=1,
+    \qquad
+    B=0
+\end{equation}
+
+mientras que $C$ cambia. Por lo tanto:
+
+\begin{equation}
+    \boxed{
+    D2 = A\overline{B}
+    }
+\end{equation}
+
+
+\subsubsection{Comparación con la reducción algebraica}
+
+Las expresiones obtenidas mediante los mapas de Karnaugh coinciden con las obtenidas
+anteriormente mediante álgebra booleana:
+
+\begin{align}
+    D1 &=
+    A\overline{B}
+    + A\overline{C}
+    + \overline{B}\,\overline{C} \\
+    D2 &= A\overline{B}
+\end{align}
+
+Por lo tanto, ambos métodos permiten obtener funciones equivalentes y conducen al
+mismo circuito combinacional reducido.
 
 
 \chapter{Conclusiones}\label{conclusion}
